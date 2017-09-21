@@ -4,10 +4,11 @@ import { RouteComponentProps } from 'react-router';
 export class Home extends React.Component<RouteComponentProps<{}>, HomeState> {
     public componentWillMount(): void {
         this.loadEmployees();
+        this.loadJobs();
     }
 
     private loadEmployees() {
-        fetch('api/Employee/GetAll')
+        fetch('api/Employee')
             .then(response => response.json() as Promise<EmployeeListModel[]>)
             .then(data => {
                 this.setState({ employees: data });
@@ -36,25 +37,28 @@ export class Home extends React.Component<RouteComponentProps<{}>, HomeState> {
     }
 
     public render() {
-        return <table className='table'>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Job title</th>
-                    <th>Employment Date</th>
-                    <th>Rate</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            {this.renderBody()}
-        </table>;
+        return <div>
+            <input type="button" value="Add new employee" onClick={() => window.location.href = "/create"} />
+            <table className='table'>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Job title</th>
+                        <th>Employment Date</th>
+                        <th>Rate</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                {this.renderBody()}
+            </table>
+        </div>;
     }
 
     private renderBody(): JSX.Element {
         if (this.state && this.state.employees) {
             return <tbody>
                 {this.state.employees.map(e => {
-                    var job = this.state.jobs && this.state.jobs.filter(j => j.id == e.id)[0];
+                    var job = this.state.jobs && this.state.jobs.filter(j => j.id == e.jobId)[0];
                     return <tr key={e.id}>
                         <td>{`${e.firstName} ${e.lastName}`}</td>
                         <td>{job && job.title}</td>

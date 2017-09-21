@@ -26,14 +26,14 @@ namespace EmployeeListTest.Main.Controllers
             this.jobRepository = jobRepository;
         }
 
-        [HttpGet("[action]")]
+        [HttpGet("")]
         public IEnumerable<EmployeeListModel> GetAll()
         {
             return mapper.Map<IEnumerable<EmployeeListModel>>(employeeRepository.GetAll());
         }
 
-        [HttpPost("[action]")]
-        public void Create(CreateEmployeeModel employee)
+        [HttpPost("")]
+        public void Post([FromBody] CreateEmployeeModel employee)
         {
             Employee entity = mapper.Map<Employee>(employee);
             employeeRepository.Add(entity);
