@@ -9,6 +9,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using EmployeeListTest.DAL;
 using Microsoft.EntityFrameworkCore;
+using EmployeeListTest.DAL.Repositories;
+using EmployeeListTest.EF;
+using EmployeeListTest.EF.Repositories;
+using AutoMapper;
 
 namespace EmployeeListTest_Main
 {
@@ -26,6 +30,23 @@ namespace EmployeeListTest_Main
         {
             services.AddMvc();
             services.AddDbContext<EmployeeContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            IMapper mapper = ConfigureMapper();
+            // Add application services.
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IJobRepository, JobRepository>();
+            services.AddSingleton<IMapper>(mapper);
+        }
+
+        private IMapper ConfigureMapper()
+        {
+            var config = new AutoMapper.MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<EmployeeListTest.DomainModel.Job, EmployeeListTest.Main.Models.JobModel>();
+                cfg.CreateMap<EmployeeListTest.DomainModel.Employee, EmployeeListTest.Main.Models.EmployeeListModel>();
+                cfg.CreateMap<EmployeeListTest.Main.Models.CreateEmployeeModel, EmployeeListTest.DomainModel.Employee>();
+            });
+
+            return config.CreateMapper();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,7 +54,7 @@ namespace EmployeeListTest_Main
         {
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
-                    serviceScope.ServiceProvider.GetService<EmployeeContext>().Initialize();
+                serviceScope.ServiceProvider.GetService<EmployeeContext>().Initialize();
             }
 
             if (env.IsDevelopment())

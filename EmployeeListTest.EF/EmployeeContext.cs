@@ -1,7 +1,7 @@
 ﻿using EmployeeListTest.DomainModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace EmployeeListTest.DAL
+namespace EmployeeListTest.EF
 {
     public class EmployeeContext : DbContext
     {

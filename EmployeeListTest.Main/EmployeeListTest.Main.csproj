@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EmployeeListTest.DAL\EmployeeListTest.DAL.csproj" />
     <ProjectReference Include="..\EmployeeListTest.DomainModel\EmployeeListTest.DomainModel.csproj" />
+    <ProjectReference Include="..\EmployeeListTest.EF\EmployeeListTest.EF.csproj" />
   </ItemGroup>
 
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
