@@ -39,7 +39,7 @@ namespace EmployeeListTest.Main.Controllers
             employeeRepository.Add(entity);
         }
 
-        [HttpDelete("[action]")]
+        [HttpDelete("{id}")]
         public void Delete(int id)
         {
             employeeRepository.Delete(id);

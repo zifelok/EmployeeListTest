@@ -3,20 +3,36 @@ import { RouteComponentProps } from 'react-router';
 
 export class Home extends React.Component<RouteComponentProps<{}>, HomeState> {
     public componentWillMount(): void {
-        this.loadData();
+        this.loadEmployees();
     }
 
-    private loadData() {
+    private loadEmployees() {
         fetch('api/Employee/GetAll')
             .then(response => response.json() as Promise<EmployeeListModel[]>)
             .then(data => {
                 this.setState({ employees: data });
             });
+    }
+
+    private loadJobs() {
         fetch('api/Employee/GetAllJobs')
             .then(response => response.json() as Promise<JobModel[]>)
             .then(data => {
                 this.setState({ jobs: data });
             });
+    }
+
+    private delete(id: number) {
+        fetch('api/Employee/' + id, { method: "DELETE" })
+            .then(data => {
+                this.loadEmployees();
+            });
+    }
+
+    private onDeleteClick(id: number) {
+        if (window.confirm("Are you sure?")) {
+            this.delete(id);
+        }
     }
 
     public render() {
@@ -44,7 +60,7 @@ export class Home extends React.Component<RouteComponentProps<{}>, HomeState> {
                         <td>{job && job.title}</td>
                         <td>{new Date(e.employmentDate).toLocaleDateString("en-US")}</td>
                         <td>{e.rate}$</td>
-                        <td><a href="#">Delete</a></td>
+                        <td><a href="#" onClick={event => this.onDeleteClick(e.id)}>Delete</a></td>
                     </tr>
                 }
                 )}
