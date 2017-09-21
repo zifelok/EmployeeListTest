@@ -15,7 +15,6 @@ export class Create extends React.Component<RouteComponentProps<{}>, CreateState
             employmentDate: new Date().toISOString().substring(0, 10),
             firstName: "",
             lastName: "",
-            jobId: 1,
             rate: 0
         };
     }
@@ -29,6 +28,8 @@ export class Create extends React.Component<RouteComponentProps<{}>, CreateState
             .then(response => response.json() as Promise<JobModel[]>)
             .then(data => {
                 this.setState({ jobs: data });
+                if (data && data.length)
+                    this.setState({ jobId: data[0].id });
             });
     }
 
@@ -105,5 +106,5 @@ interface CreateEmployeeModel {
     lastName: string;
     employmentDate: string;
     rate: number;
-    jobId: number;
+    jobId?: number;
 }
